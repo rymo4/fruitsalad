@@ -4,46 +4,35 @@ import java.util.*;
 
 public class Player extends fruit.sim.Player
 {
-  private int[] prefs;
-  private int[] platter;
+  private float[] prefs;
+  private float[] platter;
 
   public void init(int nplayers, int[] pref) {
-    prefs = pref;
-    platter = new int[pref.length];
+    prefs = Vectors.castToFloatArray(pref);
+    platter = new float[pref.length];
   }
 
   public boolean pass(int[] bowl, int bowlId, int round,
                       boolean canPick,
                       boolean mustTake) {
-    float score = score(bowl);
-    int numFruits = 0;
-    for (int i = 0 ; i < bowl.length; i++){
-      numFruits += bowl[i];
-    }
-    float[] uniformBowl = new float[bowl.length];
+    float[] currentBowl = Vectors.castToFloatArray(bowl);
+    float score = score(currentBowl);
 
-    for (int i = 0 ; i < bowl.length; i++){
-      uniformBowl[i] = (float) numFruits / bowl.length;
-    }
+    float numFruits = Vectors.sum(currentBowl);
 
+    float[] uniformBowl = new float[currentBowl.length];
+    for (int i = 0 ; i < bowl.length; i++){
+      uniformBowl[i] = numFruits / bowl.length;
+    }
     float uniformScore = score(uniformBowl);
-    System.out.println("uniformScore: " + uniformScore);
-    System.out.println("score: " + score);
+
+    System.out.println("Uniform Score: " + uniformScore);
+    System.out.println("Score: " + score);
     return uniformScore < score;
   }
 
-  private float score(int[] bowl){
-    float[] tmp = new float[bowl.length];
-    for (int i = 0 ; i < bowl.length; i++) tmp[i] = (float) bowl[i];
-    return score(tmp);
-  }
-
   private float score(float[] bowl){
-    int score = 0;
-    for (int i = 0 ; i < bowl.length; i++){
-      score += bowl[i] * prefs[i];
-    }
-    return score;
+    return Vectors.dot(bowl, prefs);
   }
 
   private Random random = new Random();
