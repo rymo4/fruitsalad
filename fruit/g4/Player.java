@@ -15,24 +15,30 @@ public class Player extends fruit.sim.Player
   public boolean pass(int[] bowl, int bowlId, int round,
                       boolean canPick,
                       boolean mustTake) {
-    int score = score(bowl);
+    float score = score(bowl);
     int numFruits = 0;
     for (int i = 0 ; i < bowl.length; i++){
       numFruits += bowl[i];
     }
-    int[] uniformBowl = new int[bowl.length];
+    float[] uniformBowl = new float[bowl.length];
 
     for (int i = 0 ; i < bowl.length; i++){
-      uniformBowl[i] = numFruits / bowl.length;
+      uniformBowl[i] = (float) numFruits / bowl.length;
     }
 
-    int uniformScore = score(uniformBowl);
+    float uniformScore = score(uniformBowl);
     System.out.println("uniformScore: " + uniformScore);
     System.out.println("score: " + score);
     return uniformScore < score;
   }
 
-  private int score(int[] bowl){
+  private float score(int[] bowl){
+    float[] tmp = new float[bowl.length];
+    for (int i = 0 ; i < bowl.length; i++) tmp[i] = (float) bowl[i];
+    return score(tmp);
+  }
+
+  private float score(float[] bowl){
     int score = 0;
     for (int i = 0 ; i < bowl.length; i++){
       score += bowl[i] * prefs[i];
