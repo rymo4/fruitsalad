@@ -1,2 +1,7 @@
 *.class
 players.list
+
+# Package Files #
+*.jar
+*.war
+*.ear
