@@ -9,8 +9,13 @@ public class Player extends fruit.sim.Player
   private float numFruits = 0;
   private float bowlsRemaining;
   private float totalNumBowls;
+  private int numPlayers;
+
+  private MLE mle;
+
 
   public void init(int nplayers, int[] pref) {
+    numPlayers = nplayers;
     prefs = Vectors.castToFloatArray(pref);
     platter = new float[pref.length];
     bowlsRemaining = (float)(nplayers - getIndex());
@@ -19,17 +24,26 @@ public class Player extends fruit.sim.Player
   }
 
   public boolean pass(int[] bowl, int bowlId, int round, boolean canPick, boolean mustTake) {
+    // SETUP
+    float[] currentBowl = Vectors.castToFloatArray(bowl);
+    numFruits = Vectors.sum(currentBowl);
     if (!canPick){
       return false;
     }
 
     System.out.println("Number of bowls that will pass: " + totalNumBowls);
     System.out.println("Number of bowls remaining: " + bowlsRemaining);
-    float[] currentBowl = Vectors.castToFloatArray(bowl);
+
+    // Initialize the histogram now that we know how many fruit come in a bowl
+    if (mle == null){
+      mle = new MLE((int) numFruits, numPlayers);
+    }
+    mle.addObservation(currentBowl);
+
+    // calculate score for the bowl the we get
     float score = score(currentBowl);
 
-    numFruits = Vectors.sum(currentBowl);
-
+    // get MLE and score it
     float[] uniformBowl = new float[currentBowl.length];
     for (int i = 0 ; i < bowl.length; i++){
       uniformBowl[i] = numFruits / bowl.length;
@@ -37,6 +51,7 @@ public class Player extends fruit.sim.Player
     float uniformScore = score(uniformBowl);
 
     System.out.println("Uniform Score: " + uniformScore);
+    System.out.println("MLE Score: " + score(mle.bowl()));
     System.out.println("Score: " + score);
     bowlsRemaining--;
     return shouldTakeBasedOnScore(score, uniformScore);
