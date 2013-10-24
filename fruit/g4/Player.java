@@ -39,7 +39,7 @@ public class Player extends fruit.sim.Player
     System.out.println("Uniform Score: " + uniformScore);
     System.out.println("Score: " + score);
     bowlsRemaining--;
-    return uniformScore < score;
+    return shouldTakeBasedOnScore(score, uniformScore);
   }
 
   private boolean shouldTakeBasedOnScore(float currentScore, float mle){
@@ -47,7 +47,7 @@ public class Player extends fruit.sim.Player
     if (currentScore < mle) return false;
 
     float diff = maxScore() - mle;
-    return currentScore > (0.5f * diff * (totalNumBowls / bowlsRemaining)) + mle;
+    return currentScore > (0.5f * diff * ((totalNumBowls - 1) / bowlsRemaining)) + mle;
   }
 
   private float maxScore(){
