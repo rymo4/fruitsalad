@@ -23,7 +23,9 @@ public class Fruit
 
     // default parameters
     private static final String DEFAULT_PLAYERLIST = "players.list";
+    private static final String DEFAULT_DISTRIBUTION = "uniform.txt";
     private static int DEFAULT_BOWL_SIZE = 10;
+
 
 	// list files below a certain directory
 	// can filter those having a specific extension constraint
@@ -100,8 +102,16 @@ public class Fruit
 
                 Player player = (Player) playerClass.newInstance();
                 // set player id
-                if (Character.isDigit(group.charAt(1)))
+                if (Character.isDigit(group.charAt(1))) {
                     player.id = group.charAt(1) - '0';
+                    
+                    //PX**
+                    if(group.equals("g4"))  {
+                    	System.out.println("g4's idx: "+player.id);
+                    	g4handle = player;
+                    }
+                    //**PX
+                }
                 else
                     player.id = -1;
 
@@ -202,6 +212,11 @@ public class Fruit
 			}
 
 			buf.append("    </div>\n");
+            // expectation
+            buf.append("    <div style=\"width: 36px; height: 40px; float:left; border: 1px solid black; text-align: center;\n");
+            buf.append("                font-size: 20px; font-weight: bold; font-family: 'Comic Sans MS', cursive, sans-serif\">" + expectation[p] + "</div>\n");
+            buf.append("    <div style=\"clear:both;\"></div>\n");
+
 			// score
             if (scores != null) {
                 buf.append("    <div style=\"width: 36px; height: 40px; float:left; border: 1px solid black; text-align: center;\n");
@@ -239,6 +254,18 @@ public class Fruit
             buf.append("                 font-weight: bold; font-family: 'Comic Sans MS', cursive, sans-serif\">" + s + "</div>\n");
         }
         buf.append(" </div>\n");
+        
+        int score = 0;
+        if (currentPlayer != -1) {
+        	
+            for (int c = 0; c < 12; c++) {
+                score += preference[currentPlayer][c] * currentBowl[c];
+            }
+            
+
+        }
+        buf.append("    <div style=\"width: 36px; height: 40px; float:left; border: 1px solid black; text-align: center;\n");
+        buf.append("                font-size: 20px; font-weight: bold; font-family: 'Comic Sans MS', cursive, sans-serif\">" + score + "</div>\n");
         buf.append("    <div style=\"clear:both;\"></div>\n");
 
         // Print player action
@@ -246,6 +273,7 @@ public class Fruit
             buf.append("<div style=\"width: 400px; height: 40px; text-align: center;font-size: 25px; font-weight: bold; font-family: 'Comic Sans MS', cursive, sans-serif\">" + action + "</div>\n");
 
         buf.append("</div>");
+
     }
 
 
@@ -304,7 +332,7 @@ public class Fruit
 
     private String state() {
 
-		int pixels = 1200;
+		int pixels = 1300;
 		String title = "Fruit";
 		StringBuffer buf = new StringBuffer("");
 		buf.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
@@ -324,20 +352,20 @@ public class Fruit
 		// general part
 		buf.append(" <div style=\"width:" + pixels + "px; margin-left:auto; margin-right: auto;\">\n");
 		// left part
-		buf.append("  <div style=\"width: 550px; float: left;\">\n");
+		buf.append("  <div style=\"width: 600px; float: left;\">\n");
         
         // initial and current distribution
         fruitDistToHtml(buf);
 
 		// space above
-		buf.append("   <div style=\"width: 550px; height: 50px;\"></div>\n");
+		buf.append("   <div style=\"width: 600px; height: 50px;\"></div>\n");
 		buf.append("   <div style=\"clear:both;\"></div>\n");
 
         // player preference
         preferenceToHtml(buf);
 
 		// space above
-		buf.append("   <div style=\"width: 550px; height: 50px;\"></div>\n");
+		buf.append("   <div style=\"width: 600px; height: 50px;\"></div>\n");
 		buf.append("   <div style=\"clear:both;\"></div>\n");
 		// space between buttons and array
 		buf.append("   <div style=\"width: 400px; height: 50px; float:left;\"></div>\n");
@@ -364,14 +392,14 @@ public class Fruit
         bowlToHtml(buf);
 
 		// space above
-		buf.append("   <div style=\"width: 500px; height: 50px;\"></div>\n");
+		buf.append("   <div style=\"width: 600px; height: 50px;\"></div>\n");
 		buf.append("   <div style=\"clear:both;\"></div>\n");
 
         // show current round first
         roundToHtml(buf, round);
 
 		// space above
-		buf.append("   <div style=\"width: 500px; height: 50px;\"></div>\n");
+		buf.append("   <div style=\"width: 600px; height: 50px;\"></div>\n");
 		buf.append("   <div style=\"clear:both;\"></div>\n");
         
         // show the other round later
@@ -397,7 +425,6 @@ public class Fruit
 			arr[j] = t;
 		}
         
-
         // set index
         for (int i = 0; i != arr.length; ++i)
             arr[i].index = i;
@@ -425,7 +452,6 @@ public class Fruit
         shuffle(pref);
         return pref;
     }
-
 
     private int pickFruit()
     {
@@ -588,7 +614,9 @@ public class Fruit
         computeScores();
         
         System.err.println(Arrays.toString(scores));
-
+        
+        System.out.println("g4idx: " + g4handle.getIndex() + ", g4's score: " + scores[g4handle.getIndex()]);
+        
         
         // clean up the server
 		if (server != null) {
@@ -611,7 +639,10 @@ public class Fruit
                 for (int k = 0; k != bowl.length; ++k)
                     score += pref[k] * bowl[k];
             }
+            
             scores[i] = score;
+            
+            
         }
         
         return scores;
@@ -627,6 +658,15 @@ public class Fruit
     }
 
 
+    private int computeExpectation(int[] pref, int[] dist, int nfruits, int bowlsz) {
+        double exp = 0;
+        for (int i = 0; i != 12; ++i) {
+            double p = 1.0 * dist[i] / nfruits;
+            exp += (p * pref[i] * bowlsz);
+        }
+        return (int)exp;
+    }
+
     public Fruit(Player[] players, int bowlsize, int[] dist)
     {
         this.players = players;
@@ -641,10 +681,59 @@ public class Fruit
             players[i].init(players.length, preference[i].clone());
         }
 
+        // compute expectation
+        expectation = new int[players.length];
+        for (int p = 0; p != players.length; ++p) {
+            expectation[p] = computeExpectation(preference[p], dist, nfruits, bowlsize);
+        }
+
         // bowl of player of both rounds
         bowlOfPlayer = new int[2][players.length][];
 
         printConfig();
+    }
+
+
+    private static int[] createServingBowl(String distPath, int nfruits) throws Exception {
+        double[] dist = new double[12];
+        int[] bowl = new int[12];
+        
+        Scanner sc = new Scanner(new File(distPath));
+        // read the first 11 possibilities
+        for (int i = 0; i < 11; ++i)
+            dist[i] = sc.nextDouble();
+        sc.close();
+        
+        // prefix sum
+        for (int i = 1; i < 11; ++i) {
+            dist[i] = dist[i-1] + dist[i];
+        }
+
+        if (dist[10] > 1)
+            throw new Exception("Distribution does not sum to 1!");
+        dist[11] = 1; // the last is always 1
+
+        for (int i = 0; i < nfruits; ++i) {
+            double r = random.nextDouble();
+            int f = -1;
+            for (int j = 0; j < 12; ++j) {
+                if (r < dist[j]) {
+                    f = j;
+                    break;
+                }
+                    
+            }
+            assert f != -1;
+            bowl[f]++;
+        }
+
+        int total = 0;
+        for (int i = 0; i < 12; ++i)
+            total += bowl[i];
+
+        assert total == nfruits;
+
+        return bowl;
     }
 
     // each round has a different fruit distribution and preference
@@ -653,7 +742,12 @@ public class Fruit
         Random random = new Random();
         String playerPath = DEFAULT_PLAYERLIST;
         int bowlsize = DEFAULT_BOWL_SIZE;
-        String distgen = "fruit.sim.UniformFruitGenerator";
+        String distPath = DEFAULT_DISTRIBUTION;
+        
+        //PX**
+        //String distrHomepath = "C:\\Users\\Peter\\workspace v1\\FruitSalad\\src\\fruit\\distrib";
+        String filepath = new File("").getAbsolutePath();
+        String distrHomepath = filepath.concat("\\fruit\\distrib\\");
 
         // player list
         if (args.length > 0)
@@ -662,25 +756,49 @@ public class Fruit
         if (args.length > 1)
             bowlsize = Integer.parseInt(args[1]);
         // distribution
-        if (args.length > 2)
-            distgen = args[2];
+        if (args.length > 2) {
+            distPath = args[2];
+        }
         // enable gui?
         if (args.length > 3)
             gui = Boolean.parseBoolean(args[3]);
         if (args.length > 4)
             trace = Boolean.parseBoolean(args[4]);
+        
+      //PX**
+        File distrdir = new File(distrHomepath);
+        File[] distrList = distrdir.listFiles();
+        
+        Vector<Result> results = new Vector<Result>();
+        
+        int numruns = 2;
+       
+        for(int i=0; i < distrList.length; i++) {
+        	Player[] players = null;
+        	double avgScore = 0.0;
+        	for(int x=0; x < numruns; x++) {
+        		players = loadPlayers(playerPath);
+        		shufflePlayer(players);
+        		distPath = distrList[i].getAbsolutePath();
+        		// read a fruit distribution
+        		//        FruitGenerator fruitgen = (FruitGenerator)Class.forName(distgen).newInstance();
+        		//        FruitGenerator fruitgen = new fruit.dumb.FruitGenerator();
 
-        Player[] players = loadPlayers(playerPath);
-        shufflePlayer(players);
+        		int[] dist = createServingBowl(distPath, bowlsize * players.length);
 
-        // read a fruit distribution
-        FruitGenerator fruitgen = (FruitGenerator)Class.forName(distgen).newInstance();
-        //        FruitGenerator fruitgen = new fruit.dumb.FruitGenerator();
+        		Fruit game = new Fruit(players, bowlsize, dist);
+        		game.play(gui);
+        		avgScore += scores[g4handle.getIndex()];
 
-        int[] dist = fruitgen.generate(players.length, bowlsize);
-
-        Fruit game = new Fruit(players, bowlsize, dist);
-        game.play(gui);
+        	}
+        	avgScore /= numruns;
+        	results.add(new Result(distrList[i].getName(), avgScore, bowlsize, players.length));
+        }
+        
+        for(Result r : results) {
+        	System.out.println(r.toString());
+        }
+        //**PX
     }
 
     
@@ -742,10 +860,14 @@ public class Fruit
     private boolean[] hasBowl;
     // bowl of player
     private int[][][] bowlOfPlayer;
-
-    private int[] scores;
+    // expectation
+    private int[] expectation;
+    // score
+    private static int[] scores; //PX**
 
     private String action;
 
     private static Random random = new Random();
+    
+    private static Player g4handle; //PX**
 }
