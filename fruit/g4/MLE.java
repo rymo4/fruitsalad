@@ -57,14 +57,36 @@ class MLE {
 
   // Get MLE for a platter by inferring from bowls that youve seen
   private float[] platter(){
-    return Vectors.scale(distribution(), (float) (numPlayers * numFruitsPerBowl));
+    return Vectors.scale(
+      distribution(),
+      (float) (numPlayers * numFruitsPerBowl)
+    );
+  }
+
+  private float numOccurances(int fruit){
+    float num = 0f;
+    for (int i = 0; i < occuranceHist[fruit].length; i++){
+      num += occuranceHist[fruit][i] * i;
+    }
+    System.out.println("Num: " + num);
+    return num;
   }
 
   //TODO: Sample many bowls in same way that sim does, return the average
-  public float[] bowl(){
-    return Vectors.scale(distribution(), (float) numFruitsPerBowl);
+  public float[] bowl(boolean firstRound){
+    // Count
+    float[] plat = platter();
+    for (int i = 0; i < plat.length; i++){
+      if (firstRound)
+        plat[i] -= numOccurances(i);
+      else
+        // If second round, we have occurances from first, so dont subtract them
+        plat[i] -= numOccurances(i) / 2;
+    }
+    return Vectors.scale(
+      Vectors.normalize(plat),
+      (float) numFruitsPerBowl
+    );
   }
-
-
 
 }

@@ -51,10 +51,10 @@ public class Player extends fruit.sim.Player
     float uniformScore = score(uniformBowl);
 
     System.out.println("Uniform Score: " + uniformScore);
-    System.out.println("MLE Score: " + score(mle.bowl()));
+    System.out.println("MLE Score: " + score(mle.bowl(round == 0)));
     System.out.println("Score: " + score);
     bowlsRemaining--;
-    return shouldTakeBasedOnScore(score, score(mle.bowl()));
+    return shouldTakeBasedOnScore(score, score(mle.bowl(round == 0)));
   }
 
   private boolean shouldTakeBasedOnScore(float currentScore, float mle){
