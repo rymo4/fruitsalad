@@ -6,11 +6,13 @@ class MLE {
   private int numFruitsPerBowl;
   private int NUM_FRUIT_TYPES = 12;
   private int numPlayers;
+  private Random random;
 
   public MLE(int numFruitsPer, int nplayers){
     numPlayers = nplayers;
     numFruitsPerBowl = numFruitsPer;
     occuranceHist = new int[NUM_FRUIT_TYPES][numFruitsPerBowl];
+    random = new Random();
   }
 
   public void addObservation(float[] bowl){
@@ -65,6 +67,49 @@ class MLE {
     return Vectors.scale(distribution(), (float) numFruitsPerBowl);
   }
 
+  private float standardDeviation() {
+    
+
+  }
+
+  // simulates the picking of a bowl taking into account clustering and returns the score of the bowl
+  private float[] simulateBowl() {
+    float[] bowl = new float[NUM_FRUIT_TYPES];
+    int sz = 0;
+    float[] currentFruits = platter();
+    while (sz < numFruitsPerBowl) {
+      // pick a fruit according to current fruit distribution
+      int fruit = pickFruit(currentFruits); 
+      float c = 1 + random.nextInt(3);
+      c = Math.min(c, numFruitsPerBowl - sz);
+      c = Math.min(c, currentFruits[fruit]);
+
+      bowl[fruit] += c;
+      sz += c;
+      currentFruits[fruit] -= c;
+    }
+    return bowl;
+  }
+
+  private int pickFruit(float[] currentFruits) {
+    // generate a prefix sum
+    float[] prefixsum = new float[NUM_FRUIT_TYPES];
+    prefixsum[0] = currentFruits[0];
+    for (int i = 1; i != NUM_FRUIT_TYPES; ++i)
+      prefixsum[i] = prefixsum[i-1] + currentFruits[i];
+
+    float currentFruitCount = prefixsum[NUM_FRUIT_TYPES - 1];
+    // roll a dice [0, currentFruitCount)
+    int rnd = random.nextInt((int) currentFruitCount);
+        
+    for (int i = 0; i != NUM_FRUIT_TYPES; ++i)
+      if (rnd < prefixsum[i])
+        return i;
+
+    assert false;
+
+    return -1;
+  }
 
 
 }
