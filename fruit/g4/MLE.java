@@ -64,7 +64,6 @@ class MLE {
     for (int i = 0; i < occuranceHist[fruit].length; i++){
       num += occuranceHist[fruit][i] * i;
     }
-    System.out.println("Num: " + num);
     return num;
   }
 
