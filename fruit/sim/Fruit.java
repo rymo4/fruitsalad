@@ -743,11 +743,11 @@ public class Fruit
         String playerPath = DEFAULT_PLAYERLIST;
         int bowlsize = DEFAULT_BOWL_SIZE;
         String distPath = DEFAULT_DISTRIBUTION;
-        
+
         //PX**
         //String distrHomepath = "C:\\Users\\Peter\\workspace v1\\FruitSalad\\src\\fruit\\distrib";
-        String filepath = new File("").getAbsolutePath();
-        String distrHomepath = filepath.concat("\\fruit\\distrib\\");
+        String filepath = new File(".").getAbsolutePath();
+        String distrHomepath = filepath.concat("/fruit/distrib/");
 
         // player list
         if (args.length > 0)
