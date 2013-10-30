@@ -5,6 +5,7 @@ import java.util.*;
 public class Player extends fruit.sim.Player
 {
   private float[] prefs;
+  private int[] prefsInt;
   private float[] platter;
   private float numFruits = 0;
   private float bowlsRemaining;
@@ -17,22 +18,22 @@ public class Player extends fruit.sim.Player
   public void init(int nplayers, int[] pref) {
     numPlayers = nplayers;
     prefs = Vectors.castToFloatArray(pref);
+    prefsInt = pref;
     platter = new float[pref.length];
     bowlsRemaining = (float)(nplayers - getIndex());
     totalNumBowls = bowlsRemaining;
-    System.out.println(getIndex());
   }
 
   public boolean pass(int[] bowl, int bowlId, int round, boolean canPick, boolean mustTake) {
-    // SETUP
     float[] currentBowl = Vectors.castToFloatArray(bowl);
     numFruits = Vectors.sum(currentBowl);
     if (!canPick){
       return false;
     }
 
-    System.out.println("Number of bowls that will pass: " + totalNumBowls);
-    System.out.println("Number of bowls remaining: " + bowlsRemaining);
+    log("|||||||||||||||||||||||||||||||||||||||||");
+    log("Number of bowls that will pass: " + totalNumBowls);
+    log("Number of bowls remaining: " + bowlsRemaining);
 
     // Initialize the histogram now that we know how many fruit come in a bowl
     if (mle == null){
@@ -50,9 +51,9 @@ public class Player extends fruit.sim.Player
     }
     float uniformScore = score(uniformBowl);
 
-    System.out.println("Uniform Score: " + uniformScore);
-    System.out.println("MLE Score: " + score(mle.bowl(round == 0)));
-    System.out.println("Score: " + score);
+    log("Uniform Score: " + uniformScore);
+    log("MLE Score: " + score(mle.bowl(round == 0)));
+    log("Score: " + score);
     bowlsRemaining--;
     return shouldTakeBasedOnScore(score, score(mle.bowl(round == 0)));
   }
@@ -62,10 +63,30 @@ public class Player extends fruit.sim.Player
     if (currentScore < mle) return false;
 
     float diff = maxScore() - mle;
-    return currentScore > (0.3f * diff * (numPlayers / 9.0f * (totalNumBowls - 1) / bowlsRemaining)) + mle;
+
+    float threshold = (0.3f * diff * (numPlayers / 9.0f * (totalNumBowls - 1) / bowlsRemaining)) + mle;
+    log("Threshold: " + threshold);
+    log("|||||||||||||||||||||||||||||||||||||||||");
+    return currentScore > threshold;
   }
 
   private float maxScore(){
+    int numBowlsSeen = (int) totalNumBowls - (int) bowlsRemaining;
+    int cutoff = 3;
+
+    if (numBowlsSeen > cutoff) {
+      float score = 0;
+      int pref = 12;
+      int mostCanSee = -1;
+      while (mostCanSee < numFruits) {
+        int maxPrefFruit = Vectors.indexOf(prefsInt, pref);
+        int mostOFThisFruit = mle.mostCanSee(maxPrefFruit);
+        score += mostOFThisFruit * pref;
+        mostCanSee += mostOFThisFruit;
+        pref--;
+      }
+      return score;
+    }
     return numFruits * 12;
   }
 
@@ -74,4 +95,8 @@ public class Player extends fruit.sim.Player
   }
 
   private Random random = new Random();
+
+  private void log(String str){
+    System.out.println("| " + str);
+  }
 }

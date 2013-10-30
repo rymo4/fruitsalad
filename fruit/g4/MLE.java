@@ -122,5 +122,12 @@ class MLE {
     return -1;
   }
 
+  public int mostCanSee(int fruit){
+    return Math.min(
+      (int) Math.max(Math.ceil(platter()[fruit]), 0),
+      (int) numFruitsPerBowl
+    );
+  }
+
 
 }
