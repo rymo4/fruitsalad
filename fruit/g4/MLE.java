@@ -42,9 +42,9 @@ class MLE {
   }
 
   public float fruitOccuranceMLE(int fruit) {
-    float[] gaussianArr = new float[numFruitsPerBowl];
-    for (int i = 0; i < numFruitsPerBowl; i++){
-      for (int j = 0; j < numFruitsPerBowl; j++){ //TODO: just loop across 3 on each side
+    float[] gaussianArr = new float[numFruitsPerBowl + 1];
+    for (int i = 0; i < occuranceHist[0].length; i++){
+      for (int j = 0; j < occuranceHist[0].length; j++){ //TODO: just loop across 3 on each side
         gaussianArr[i] += gaussian(i, j) * occuranceHist[fruit][j];
       }
     }
@@ -74,7 +74,7 @@ class MLE {
       float[] tempPlatter = platter.clone();
       float[] tempBowl = simulateBowl(tempPlatter);
       for (int j = 0; j < NUM_FRUIT_TYPES; j++) {
-	averageBowl[j] += tempBowl[j];
+        averageBowl[j] += tempBowl[j];
       }
     }
     for (int i = 0; i < NUM_FRUIT_TYPES; i++) {
