@@ -11,7 +11,7 @@ class MLE {
   public MLE(int numFruitsPer, int nplayers){
     numPlayers = nplayers;
     numFruitsPerBowl = numFruitsPer;
-    occuranceHist = new int[NUM_FRUIT_TYPES][numFruitsPerBowl];
+    occuranceHist = new int[NUM_FRUIT_TYPES][numFruitsPerBowl + 1];
     random = new Random();
   }
 
