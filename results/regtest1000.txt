@@ -1,0 +1,11 @@
+                    Distribution: g7.txt     ----         g1: 62.01       g2: 57.28       g4: 63.25       g5: 63.64       g6: 62.35       g7: 60.32    g8new: 57.76       g9: 56.49
+           Distribution: halfuniform.txt     ----         g1: 61.94       g2: 56.84       g4: 62.06       g5: 62.51       g6: 62.53       g7: 59.53    g8new: 59.07       g9: 56.04
+       Distribution: halfuniformleft.txt     ----         g1: 61.80       g2: 57.00       g4: 61.77       g5: 63.17       g6: 62.21       g7: 61.50    g8new: 58.57       g9: 57.28
+      Distribution: halfuniformright.txt     ----         g1: 62.18       g2: 57.00       g4: 62.26       g5: 63.27       g6: 62.02       g7: 59.93    g8new: 57.90       g9: 56.68
+            Distribution: hitandmiss.txt     ----         g1: 61.13       g2: 57.20       g4: 62.06       g5: 63.35       g6: 62.07       g7: 60.87    g8new: 57.57       g9: 56.81
+                Distribution: linear.txt     ----         g1: 62.55       g2: 57.01       g4: 62.17       g5: 63.73       g6: 62.03       g7: 59.94    g8new: 57.89       g9: 56.93
+                Distribution: normal.txt     ----         g1: 62.31       g2: 56.58       g4: 62.23       g5: 65.09       g6: 62.84       g7: 59.15    g8new: 58.38       g9: 56.87
+          Distribution: thirduniform.txt     ----         g1: 60.87       g2: 56.32       g4: 60.85       g5: 62.00       g6: 60.89       g7: 59.75    g8new: 56.94       g9: 56.88
+      Distribution: thirduniformleft.txt     ----         g1: 60.65       g2: 56.85       g4: 60.64       g5: 62.48       g6: 60.87       g7: 60.31    g8new: 56.85       g9: 56.14
+     Distribution: thirduniformright.txt     ----         g1: 60.79       g2: 57.20       g4: 60.40       g5: 61.71       g6: 60.93       g7: 61.25    g8new: 56.81       g9: 57.39
+               Distribution: uniform.txt     ----         g1: 63.05       g2: 57.91       g4: 62.63       g5: 64.00       g6: 62.14       g7: 59.81    g8new: 57.79       g9: 56.79
