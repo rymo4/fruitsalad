@@ -54,19 +54,36 @@ public class Player extends fruit.sim.Player
     System.out.println("MLE Score: " + score(mle.bowl(round == 0)));
     System.out.println("Score: " + score);
     bowlsRemaining--;
-    return shouldTakeBasedOnScore(score, score(mle.bowl(round == 0)));
+    float[] mleBowl = mle.bowl(round == 0);
+    float[] mlePlatter = mle.platter();
+    float maxScore = maxScore(mlePlatter);
+    return shouldTakeBasedOnScore(score, score(mleBowl), maxScore);
   }
 
-  private boolean shouldTakeBasedOnScore(float currentScore, float mle){
+  private boolean shouldTakeBasedOnScore(float currentScore, float mle, float maxScore){
     // based on number of bowls remaining to pass you, decide if you should take
     if (currentScore < mle) return false;
 
-    float diff = maxScore() - mle;
+    float diff = maxScore - mle;
     return currentScore > (0.3f * diff * (numPlayers / 9.0f * (totalNumBowls - 1) / bowlsRemaining)) + mle;
   }
 
-  private float maxScore(){
-    return numFruits * 12;
+  private float maxScore(float[] mlePlatter) {
+    float fruitsTaken = 0;
+    float maxScore = 0;
+    int currentPref = prefs.length;
+    while (fruitsTaken < numFruits && currentPref > 0) {
+      int currentFruit = Arrays.asList(prefs).indexOf(currentPref);
+      if (numFruits - fruitsTaken < mlePlatter[currentFruit]) {
+	  maxScore += (numFruits - fruitsTaken) * currentPref;
+	  fruitsTaken = numFruits;
+      } else {
+	  maxScore += mlePlatter[currentFruit] * currentPref;
+	  fruitsTaken += mlePlatter[currentFruit];
+      }
+      currentPref--;
+    }
+    return maxScore;
   }
 
   private float score(float[] bowl){
