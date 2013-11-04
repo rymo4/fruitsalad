@@ -75,11 +75,11 @@ public class Player extends fruit.sim.Player
     while (fruitsTaken < numFruits && currentPref > 0) {
       int currentFruit = Arrays.asList(prefs).indexOf(currentPref);
       if (numFruits - fruitsTaken < mlePlatter[currentFruit]) {
-	  maxScore += (numFruits - fruitsTaken) * currentPref;
-	  fruitsTaken = numFruits;
+        maxScore += (numFruits - fruitsTaken) * currentPref;
+	fruitsTaken = numFruits;
       } else {
-	  maxScore += mlePlatter[currentFruit] * currentPref;
-	  fruitsTaken += mlePlatter[currentFruit];
+	maxScore += mlePlatter[currentFruit] * currentPref;
+	fruitsTaken += mlePlatter[currentFruit];
       }
       currentPref--;
     }
