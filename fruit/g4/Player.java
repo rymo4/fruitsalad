@@ -10,6 +10,7 @@ public class Player extends fruit.sim.Player
   private float bowlsRemaining;
   private float totalNumBowls;
   private int numPlayers;
+  private Stats scoreStats;
 
   private MLE mle;
 
@@ -20,6 +21,7 @@ public class Player extends fruit.sim.Player
     platter = new float[pref.length];
     bowlsRemaining = (float)(nplayers - getIndex());
     totalNumBowls = bowlsRemaining;
+    scoreStats = new Stats();
     System.out.println(getIndex());
   }
 
@@ -42,6 +44,7 @@ public class Player extends fruit.sim.Player
 
     // calculate score for the bowl the we get
     float score = score(currentBowl);
+    scoreStats.addData(score);
 
     // get MLE and score it
     float[] uniformBowl = new float[currentBowl.length];
