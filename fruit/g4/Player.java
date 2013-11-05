@@ -74,9 +74,9 @@ public class Player extends fruit.sim.Player
   private float maxScore(float[] mlePlatter) {
     float fruitsTaken = 0;
     float maxScore = 0;
-    int currentPref = prefs.length;
+    float currentPref = prefs.length;
     while (fruitsTaken < numFruits && currentPref > 0) {
-      int currentFruit = Arrays.asList(prefs).indexOf(currentPref);
+      int currentFruit = indexOf(prefs, currentPref);
       if (numFruits - fruitsTaken < mlePlatter[currentFruit]) {
         maxScore += (numFruits - fruitsTaken) * currentPref;
 	fruitsTaken = numFruits;
@@ -87,6 +87,15 @@ public class Player extends fruit.sim.Player
       currentPref--;
     }
     return maxScore;
+  }
+
+  private int indexOf(float[] a, float x) {
+    for (int i = 0; i < a.length; i++) {
+      if (a[i] == x) {
+        return i;
+      }
+    }
+    return -1;
   }
 
   private float score(float[] bowl){
