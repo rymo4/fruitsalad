@@ -11,6 +11,7 @@ public class Player extends fruit.sim.Player
   private float bowlsRemaining;
   private float totalNumBowls;
   private int numPlayers;
+  private Stats scoreStats;
 
   private MLE mle;
 
@@ -22,6 +23,8 @@ public class Player extends fruit.sim.Player
     platter = new float[pref.length];
     bowlsRemaining = (float)(nplayers - getIndex());
     totalNumBowls = bowlsRemaining;
+    scoreStats = new Stats();
+    System.out.println(getIndex());
   }
 
   public boolean pass(int[] bowl, int bowlId, int round, boolean canPick, boolean mustTake) {
@@ -43,6 +46,7 @@ public class Player extends fruit.sim.Player
 
     // calculate score for the bowl the we get
     float score = score(currentBowl);
+    scoreStats.addData(score);
 
     // get MLE and score it
     float[] uniformBowl = new float[currentBowl.length];
@@ -55,39 +59,44 @@ public class Player extends fruit.sim.Player
     log("MLE Score: " + score(mle.bowl(round == 0)));
     log("Score: " + score);
     bowlsRemaining--;
-    return shouldTakeBasedOnScore(score, score(mle.bowl(round == 0)));
+    float[] mleBowl = mle.bowl(round == 0);
+    float[] mlePlatter = mle.platter();
+    float maxScore = maxScore(mlePlatter);
+    return shouldTakeBasedOnScore(score, score(mleBowl), maxScore);
   }
 
-  private boolean shouldTakeBasedOnScore(float currentScore, float mle){
+  private boolean shouldTakeBasedOnScore(float currentScore, float mle, float maxScore){
     // based on number of bowls remaining to pass you, decide if you should take
     if (currentScore < mle) return false;
-
-    float diff = maxScore() - mle;
-
-    float threshold = (0.3f * diff * (numPlayers / 9.0f * (totalNumBowls - 1) / bowlsRemaining)) + mle;
-    log("Threshold: " + threshold);
-    log("|||||||||||||||||||||||||||||||||||||||||");
-    return currentScore > threshold;
+    float diff = maxScore - mle;
+    return currentScore > (0.3f * diff * (numPlayers / 9.0f * (totalNumBowls - 1) / bowlsRemaining)) + mle;
   }
 
-  private float maxScore(){
-    int numBowlsSeen = (int) totalNumBowls - (int) bowlsRemaining;
-    int cutoff = 3;
-
-    if (numBowlsSeen > cutoff) {
-      float score = 0;
-      int pref = 12;
-      int mostCanSee = -1;
-      while (mostCanSee < numFruits) {
-        int maxPrefFruit = Vectors.indexOf(prefsInt, pref);
-        int mostOFThisFruit = mle.mostCanSee(maxPrefFruit);
-        score += mostOFThisFruit * pref;
-        mostCanSee += mostOFThisFruit;
-        pref--;
+  private float maxScore(float[] mlePlatter) {
+    float fruitsTaken = 0;
+    float maxScore = 0;
+    float currentPref = prefs.length;
+    while (fruitsTaken < numFruits && currentPref > 0) {
+      int currentFruit = indexOf(prefs, currentPref);
+      if (numFruits - fruitsTaken < mlePlatter[currentFruit]) {
+        maxScore += (numFruits - fruitsTaken) * currentPref;
+        fruitsTaken = numFruits;
+      } else {
+        maxScore += mlePlatter[currentFruit] * currentPref;
+        fruitsTaken += mlePlatter[currentFruit];
       }
-      return score;
+      currentPref--;
     }
-    return numFruits * 12;
+    return maxScore;
+  }
+
+  private int indexOf(float[] a, float x) {
+    for (int i = 0; i < a.length; i++) {
+      if (a[i] == x) {
+        return i;
+      }
+    }
+    return -1;
   }
 
   private float score(float[] bowl){

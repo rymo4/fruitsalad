@@ -52,7 +52,7 @@ class MLE {
   }
 
   // Get MLE for a platter by inferring from bowls that youve seen
-  private float[] platter(){
+  public float[] platter(){
     return Vectors.scale(
       distribution(),
       (float) (numPlayers * numFruitsPerBowl)
