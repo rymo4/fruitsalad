@@ -1,0 +1,50 @@
+//installation of snapmap:
+
+//install python
+//install pip (if needed)
+//install ez_setup (if needed)
+//install MySQL database
+
+//install south
+//install dj-database-url
+
+//install mysql-python:
+http://stackoverflow.com/questions/1448429/how-to-install-mysqldb-python-data-access-library-to-mysql-on-mac-os-x
+http://stackoverflow.com/questions/3898750/installing-mysqldb-for-python-2-6-on-osx
+
+//install dj-static:
+pip install dj-static
+
+//install flickr api:
+http://stackoverflow.com/questions/13434623/how-to-access-flickr-api-using-python
+
+//setup the MySQL db and the users:
+(check the local_settings.py to make sure the consistency of your user/pwd setting)
+create user '[USER_NAME]'@'localhost' identified by '[PASSWORD]';
+create database snapdata;
+grant all privileges on snapdata.* to '[USER_NAME]'@'localhost' identified by '[PASSWORD]';
+
+//sync the scheme to the table
+python manage.py syncdb
+//define the superuser info
+aeon / aeon.lin@gmail.com / for+
+
+//migrate the scheme to the table
+python manage.py migrate
+
+//now you can run the server
+python manage.py runserver
+
+//and view the content in a browser
+http://localhost:8000/
+//or login as admin
+http://localhost:8000/admin
+
+snapmapapp
+http://snapmapapp.herokuapp.com/
+http://snapmapapp.herokuapp.com/admin/
+username: admin
+password: pajamas
+
+
+
