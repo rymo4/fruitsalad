@@ -26,10 +26,10 @@ class MLE {
     int diff = Math.abs(mean - sample);
 
     // .46 + 2(.22) + 2(.04) + 2(0.01) = 1.0
-    if (diff == 0) return 0.46f;
-    else if (diff == 1) return 0.22f;
-    else if (diff == 2) return 0.04f;
-    else if (diff == 3) return 0.01f;
+    if (diff == 0) return 1.0f;
+    //else if (diff == 1) return 0.22f;
+    //else if (diff == 2) return 0.04f;
+    //else if (diff == 3) return 0.01f;
     return 0f;
   }
 
@@ -70,6 +70,7 @@ class MLE {
   public float[] bowl(boolean firstRound){
     float[] averageBowl = new float[NUM_FRUIT_TYPES];
     float[] platter = platter();
+    System.out.println(Arrays.toString(platter));
     for (int i = 0; i < 1000; i++) {
       float[] tempPlatter = platter.clone();
       float[] tempBowl = simulateBowl(tempPlatter);

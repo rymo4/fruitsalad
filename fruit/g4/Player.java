@@ -31,6 +31,7 @@ public class Player extends fruit.sim.Player
     float[] currentBowl = Vectors.castToFloatArray(bowl);
     numFruits = Vectors.sum(currentBowl);
     if (!canPick){
+      log("CANT PICK RETURNING EARLY");
       return false;
     }
 
@@ -58,18 +59,30 @@ public class Player extends fruit.sim.Player
     log("Uniform Score: " + uniformScore);
     log("MLE Score: " + score(mle.bowl(round == 0)));
     log("Score: " + score);
-    bowlsRemaining--;
     float[] mleBowl = mle.bowl(round == 0);
     float[] mlePlatter = mle.platter();
     float maxScore = maxScore(mlePlatter);
-    return shouldTakeBasedOnScore(score, score(mleBowl), maxScore);
+    boolean take = shouldTakeBasedOnScore(score, score(mleBowl), maxScore);
+    bowlsRemaining--;
+    return take;
   }
 
   private boolean shouldTakeBasedOnScore(float currentScore, float mle, float maxScore){
     // based on number of bowls remaining to pass you, decide if you should take
     if (currentScore < mle) return false;
     float diff = maxScore - mle;
-    return currentScore > (0.3f * diff * (numPlayers / 9.0f * (totalNumBowls - 1) / bowlsRemaining)) + mle;
+    float percentage = 0.1f; // OPTIMIZE THIS NUMBER!!!
+    float upperBound = mle + (percentage * diff);
+    float currentPercent = (bowlsRemaining + 1) / (totalNumBowls + 1);
+    assert currentPercent <= 1f;
+    assert currentPercent >= 0f;
+
+    float currentThresh = mle + ((upperBound - mle) * currentPercent);
+    log("maxScore: " + maxScore);
+    log("upperBound: " + upperBound);
+    log("currentThresh: " + currentThresh);
+
+    return currentScore >= currentThresh;
   }
 
   private float maxScore(float[] mlePlatter) {
