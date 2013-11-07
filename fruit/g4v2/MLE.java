@@ -7,12 +7,16 @@ class MLE {
   private int NUM_FRUIT_TYPES = 12;
   private int numPlayers;
   private Random random;
+  private float[] prefs;
+  private Stats bowlScoreStats;
 
-  public MLE(int numFruitsPer, int nplayers){
+
+  public MLE(int numFruitsPer, int nplayers, float[] preferences){
     numPlayers = nplayers;
     numFruitsPerBowl = numFruitsPer;
     occuranceHist = new int[NUM_FRUIT_TYPES][numFruitsPerBowl + 1];
     random = new Random();
+    prefs = preferences;
   }
 
   public void addObservation(float[] bowl){
@@ -70,12 +74,14 @@ class MLE {
     float[] averageBowl = new float[NUM_FRUIT_TYPES];
     float[] platter = platter();
     System.out.println(Arrays.toString(platter));
+    bowlScoreStats = new Stats();
     for (int i = 0; i < 1000; i++) {
       float[] tempPlatter = platter.clone();
       float[] tempBowl = simulateBowl(tempPlatter);
       for (int j = 0; j < NUM_FRUIT_TYPES; j++) {
         averageBowl[j] += tempBowl[j];
       }
+      bowlScoreStats.addData(Vectors.dot(tempBowl, prefs));
     }
     for (int i = 0; i < NUM_FRUIT_TYPES; i++) {
       averageBowl[i] = averageBowl[i] / 1000;
@@ -129,5 +135,7 @@ class MLE {
     );
   }
 
-
+  public Stats getBowlGenerationStats() {
+    return bowlScoreStats;
+  }
 }
