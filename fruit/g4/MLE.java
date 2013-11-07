@@ -74,7 +74,7 @@ class MLE {
     float[] averageBowl = new float[NUM_FRUIT_TYPES];
     float[] platter = platter();
     System.out.println(Arrays.toString(platter));
-    Stats bowlScoreStats = new Stats();
+    bowlScoreStats = new Stats();
     for (int i = 0; i < 1000; i++) {
       float[] tempPlatter = platter.clone();
       float[] tempBowl = simulateBowl(tempPlatter);
