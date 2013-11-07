@@ -41,7 +41,7 @@ public class Player extends fruit.sim.Player
 
     // Initialize the histogram now that we know how many fruit come in a bowl
     if (mle == null){
-      mle = new MLE((int) numFruits, numPlayers);
+      mle = new MLE((int) numFruits, numPlayers, prefs);
     }
     mle.addObservation(currentBowl);
 
@@ -60,19 +60,20 @@ public class Player extends fruit.sim.Player
     log("MLE Score: " + score(mle.bowl(round == 0)));
     log("Score: " + score);
     float[] mleBowl = mle.bowl(round == 0);
+    Stats bowlGenerationStats = mle.getBowlGenerationStats();
     float[] mlePlatter = mle.platter();
     float maxScore = maxScore(mlePlatter);
-    boolean take = shouldTakeBasedOnScore(score, score(mleBowl), maxScore);
+    boolean take = shouldTakeBasedOnScore(score, score(mleBowl), maxScore, bowlGenerationStats.standardDeviation());
     bowlsRemaining--;
     return take;
   }
 
-  private boolean shouldTakeBasedOnScore(float currentScore, float mle, float maxScore){
+  private boolean shouldTakeBasedOnScore(float currentScore, float mle, float maxScore, float stdev){
     // based on number of bowls remaining to pass you, decide if you should take
     if (currentScore < mle) return false;
     float diff = maxScore - mle;
     float percentage = 0.1f; // OPTIMIZE THIS NUMBER!!!
-    float upperBound = mle + (percentage * diff);
+    float upperBound = mle + stdev;
     float currentPercent = (bowlsRemaining + 1) / (totalNumBowls + 1);
     assert currentPercent <= 1f;
     assert currentPercent >= 0f;
