@@ -1,5 +1,4 @@
 package fruit.g4;
-
 import java.util.*;
 
 public class Player extends fruit.sim.Player
@@ -72,7 +71,7 @@ public class Player extends fruit.sim.Player
     if (currentScore < mle) return false;
     float diff = maxScore - mle;
     float percentage = 0.1f; // OPTIMIZE THIS NUMBER!!!
-    float upperBound = mle + stdev;
+    float upperBound = mle + 2 * stdev;
     float currentPercent = (bowlsRemaining + 1) / (totalNumBowls + 1);
     assert currentPercent <= 1f;
     assert currentPercent >= 0f;
