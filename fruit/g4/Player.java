@@ -63,17 +63,17 @@ public class Player extends fruit.sim.Player
     Stats bowlGenerationStats = mle.getBowlGenerationStats();
     float[] mlePlatter = mle.platter();
     float maxScore = maxScore(mlePlatter);
-    boolean take = shouldTakeBasedOnScore(score, score(mleBowl), maxScore, bowlGenerationStats.variance());
+    boolean take = shouldTakeBasedOnScore(score, score(mleBowl), maxScore, bowlGenerationStats.standardDeviation());
     bowlsRemaining--;
     return take;
   }
 
-  private boolean shouldTakeBasedOnScore(float currentScore, float mle, float maxScore, float variance){
+  private boolean shouldTakeBasedOnScore(float currentScore, float mle, float maxScore, float stdev){
     // based on number of bowls remaining to pass you, decide if you should take
     if (currentScore < mle) return false;
     float diff = maxScore - mle;
     float percentage = 0.1f; // OPTIMIZE THIS NUMBER!!!
-    float upperBound = mle + (percentage * diff);
+    float upperBound = mle + stdev;
     float currentPercent = (bowlsRemaining + 1) / (totalNumBowls + 1);
     assert currentPercent <= 1f;
     assert currentPercent >= 0f;
