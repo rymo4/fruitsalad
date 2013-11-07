@@ -15,7 +15,6 @@ public class Player extends fruit.sim.Player
 
   private MLE mle;
 
-
   public void init(int nplayers, int[] pref) {
     numPlayers = nplayers;
     prefs = Vectors.castToFloatArray(pref);
