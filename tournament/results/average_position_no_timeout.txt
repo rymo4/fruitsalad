@@ -1,0 +1,19 @@
+select gname, avg(position) as avg_pos from result where timeout = 0 group by gname order by avg_pos asc;
++---------+---------+
+| gname   | avg_pos |
++---------+---------+
+| g9      |  9.1002 |
+| g5a     |  9.1035 |
+| g2      |  9.1079 |
+| g7      |  9.1155 |
+| g6      |  9.1192 |
+| g3      |  9.1323 |
+| g5b     |  9.2088 |
+| g4      |  9.2208 |
+| g8Fruit |  9.2630 |
+| g8      |  9.2799 |
+| g1_v0   |  9.3517 |
+| g1_v1   |  9.3849 |
+| dumb    | 10.3549 |
++---------+---------+
+13 rows in set (2.47 sec)
