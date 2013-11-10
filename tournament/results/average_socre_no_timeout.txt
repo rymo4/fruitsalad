@@ -1,0 +1,19 @@
+select gname, avg(score) as avg_score from result where timeout = 0 group by gname order by avg_score desc;
++---------+-----------+
+| gname   | avg_score |
++---------+-----------+
+| g1_v0   |  539.1634 |
+| g1_v1   |  537.6120 |
+| g8      |  533.9998 |
+| g5b     |  530.0280 |
+| g8Fruit |  528.4377 |
+| g4      |  524.8486 |
+| g2      |  524.4874 |
+| g3      |  519.8542 |
+| g9      |  517.0757 |
+| g5a     |  515.7623 |
+| g7      |  515.4984 |
+| g6      |  490.5703 |
+| dumb    |  484.6336 |
++---------+-----------+
+13 rows in set (2.50 sec)
