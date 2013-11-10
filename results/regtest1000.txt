@@ -44,3 +44,22 @@ Distribution: RandomizedDistribution2.txt     ----         g1: 63.13       g2: 6
       Distribution: thirduniformleft.txt     ----         g1: 61.66       g2: 61.45       g3: 60.55       g4: 63.69      g5b: 63.65       g6: 61.18       g7: 60.83    g8new: 58.28       g9: 60.34
                Distribution: uniform.txt     ----         g1: 63.46       g2: 63.56       g3: 61.09       g4: 66.40      g5b: 63.82       g6: 62.93       g7: 61.99    g8new: 58.89       g9: 64.78
        Distribution: uniform_partial.txt     ----         g1: 63.17       g2: 63.47       g3: 61.44       g4: 65.08      g5b: 64.04       g6: 63.56       g7: 61.81    g8new: 58.66       g9: 63.65
+
+	   Stdev vs Percentage
+	    Distribution: halfuniform.txt     ----   g4bmean1: 556.82       g4: 554.83       g1: 552.54       g2: 559.85       g3: 555.11      g5b: 567.34       g6: 550.81       g7: 555.79    g8new: 542.93       g9: 562.41
+                Distribution: normal.txt     ----   g4bmean1: 554.34       g4: 555.38       g1: 555.70       g2: 562.22       g3: 558.89      g5b: 565.56       g6: 552.22       g7: 550.05    g8new: 549.58       g9: 564.21
+             Distribution: parabolic.txt     ----   g4bmean1: 556.75       g4: 554.76       g1: 558.22       g2: 560.57       g3: 554.22      g5b: 567.39       g6: 552.51       g7: 552.29    g8new: 548.30       g9: 563.10
+               Distribution: uniform.txt     ----   g4bmean1: 559.58       g4: 557.61       g1: 566.58       g2: 563.56       g3: 559.68      g5b: 565.46       g6: 555.50       g7: 557.13    g8new: 549.13       g9: 564.15
+	  
+Final Test before Submission:
+Peter's runs	  
+		   Distribution: halfuniform.txt     ----    g4mean1: 552.79  g4mean2: 552.05  g4mean3: 547.23  g4mean4: 550.72  g4mode1: 552.15  g4mode2: 553.39  g4mode3: 549.72  g4mode4: 547.35
+                Distribution: normal.txt     ----    g4mean1: 552.72  g4mean2: 551.45  g4mean3: 554.40  g4mean4: 544.54  g4mode1: 552.58  g4mode2: 551.07  g4mode3: 554.34  g4mode4: 548.67
+             Distribution: parabolic.txt     ----    g4mean1: 554.09  g4mean2: 551.72  g4mean3: 550.32  g4mean4: 547.57  g4mode1: 551.79  g4mode2: 551.50  g4mode3: 552.20  g4mode4: 554.50
+               Distribution: uniform.txt     ----    g4mean1: 553.69  g4mean2: 554.32  g4mean3: 552.00  g4mean4: 548.66  g4mode1: 552.08  g4mode2: 553.28  g4mode3: 553.01  g4mode4: 549.88
+Average:
+G4mean1: 553.32
+G4mean2: 552.385
+G4mode1: 552.15
+G4mode2: 552.31
+G4mode3: 552.32
