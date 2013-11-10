@@ -1,0 +1,18 @@
+select gname, count(*) as timeouts from result where timeout = 1 group by gname order by timeouts desc;
++---------+----------+
+| gname   | timeouts |
++---------+----------+
+| g1_v1   |    10507 |
+| g1_v0   |    10448 |
+| g4      |     4885 |
+| g8Fruit |     4803 |
+| g8      |     4264 |
+| g5b     |     3760 |
+| g6      |       41 |
+| g2      |       12 |
+| g3      |        5 |
+| g5a     |        5 |
+| g7      |        3 |
+| g9      |        3 |
++---------+----------+
+12 rows in set (0.94 sec)
