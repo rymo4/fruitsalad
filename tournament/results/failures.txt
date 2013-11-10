@@ -1,0 +1,29 @@
+ select players, bowlsz, dist, count(*) as num_failures from game join result on game_id = id and gname = "g4" and timeout = 1 group by players, bowlsz, dist order by num_failures desc;
+ +---------+--------+--------------+--------------+
+ | players | bowlsz | dist         | num_failures |
+ +---------+--------+--------------+--------------+
+ |      12 |     12 | uniform2.txt |         1277 |
+ |      12 |     12 | uniform.txt  |          900 |
+ |      12 |     12 | power2.txt   |          834 |
+ |      12 |     12 | random.txt   |          780 |
+ |      12 |     12 | uniform6.txt |          699 |
+ |      13 |      1 | uniform2.txt |          111 |
+ |      12 |      1 | uniform2.txt |          101 |
+ |      13 |      1 | uniform6.txt |           62 |
+ |      12 |      1 | uniform6.txt |           35 |
+ |      13 |      1 | random.txt   |           25 |
+ |      13 |      1 | uniform.txt  |           23 |
+ |      12 |      1 | random.txt   |           16 |
+ |      12 |      1 | uniform.txt  |            6 |
+ |      12 |      1 | power2.txt   |            5 |
+ |      13 |      1 | power2.txt   |            3 |
+ |      26 |     36 | power2.txt   |            1 |
+ |      13 |    100 | random.txt   |            1 |
+ |      26 |    100 | power2.txt   |            1 |
+ |      13 |     36 | power2.txt   |            1 |
+ |      13 |     12 | uniform2.txt |            1 |
+ |      26 |      1 | uniform.txt  |            1 |
+ |      13 |     36 | random.txt   |            1 |
+ |      13 |     36 | uniform2.txt |            1 |
+ +---------+--------+--------------+--------------+
+ 23 rows in set (4.46 sec)
