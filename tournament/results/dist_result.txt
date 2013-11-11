@@ -1,0 +1,11 @@
+select dist, avg(score) as avg_score from result join game on id = game_id and gname = "g4" group by dist order by avg_score desc;
++--------------+-----------+
+| dist         | avg_score |
++--------------+-----------+
+| uniform.txt  |  519.1456 |
+| random.txt   |  518.3278 |
+| uniform6.txt |  516.2850 |
+| power2.txt   |  510.7186 |
+| uniform2.txt |  501.8779 |
++--------------+-----------+
+5 rows in set (5.46 sec)

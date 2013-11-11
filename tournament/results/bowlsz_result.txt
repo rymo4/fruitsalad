@@ -1,0 +1,10 @@
+select bowlsz, avg(score) as avg_score, avg(score) / (bowlsz * 6.5) as ratio from result join game on id = game_id and gname = "g4" group by bowlsz order by ratio desc;
++--------+-----------+------------+
+| bowlsz | avg_score | ratio      |
++--------+-----------+------------+
+|     12 |  174.3642 | 2.23543878 |
+|      1 |   14.4566 | 2.22408846 |
+|     36 |  503.1798 | 2.15034103 |
+|    100 | 1361.0833 | 2.09397423 |
++--------+-----------+------------+
+4 rows in set (4.96 sec)

@@ -1,0 +1,9 @@
+select players, avg(score) as avg_score from result join game on id = game_id and gname = "g4" group by players order by avg_score desc;
++---------+-----------+
+| players | avg_score |
++---------+-----------+
+|      26 |  517.2557 |
+|      13 |  509.7205 |
+|      12 |  508.8520 |
++---------+-----------+
+3 rows in set (5.94 sec)

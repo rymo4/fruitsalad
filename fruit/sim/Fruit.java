@@ -782,7 +782,7 @@ public class Fruit
             repeats = Integer.parseInt(args[5]);
         
       //PX**
-        boolean regTest = true;
+        boolean regTest = false;
         File distrdir = new File(distrHomepath);
         File[] distrList = distrdir.listFiles();
         
